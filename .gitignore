@@ -1,0 +1,11 @@
+# .gitignore
+__pycache__/
+*.pyc
+*.egg-info/
+venv/
+.venv/
+*.log
+.idea/
+.vscode/
+odoo.conf  # Never commit: contains your DB password
+.DS_Store
