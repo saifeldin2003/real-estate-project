@@ -24,8 +24,12 @@ class Tenant(models.Model):
     def get_lead_name(self):
         """Get the name of the associated CRM lead"""
         for record in self:
-            if record.crm_lead_id:
-                lead_name = record.crm_lead_id.name
+            if record.crm_lead_id.website:
+                lead_name = record.crm_lead_id.website
                 record.write({'notes': 'Associated CRM Lead: ' + lead_name})
+            elif record.crm_lead_id.email_from:
+                lead_email = record.crm_lead_id.email_from
+                record.write({'notes': 'Associated CRM Lead: ' + lead_email})
             else:
-                record.write({'notes': 'No associated CRM Lead.'})        
+                record.write({'notes': 'No associated CRM Lead found.'})    
+                
