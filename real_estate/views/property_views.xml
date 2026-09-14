@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Property List View (Tree) -->
+    <record id="view_property_tree" model="ir.ui.view">
+        <field name="name">real_estate.property.tree</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name"/>
+                <field name="price"/>
+                <field name="bedrooms"/>
+                <field name="description"/>
+                <field name="available"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="agent_id"/>
+                <field name="property_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Property Action (Links views together) -->
+    <record id="action_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">real_estate.property</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first property
+            </p>
+        </field>
+    </record>
+
+
+
+      <!-- Property Form View -->
+    <record id="view_property_form" model="ir.ui.view">
+        <field name="name">real_estate.property.form</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+            <header>
+                    <button name="mark_as_occupied" string="Mark as Occupied" type="object" invisible="not available" class="oe_highlight"/>
+                    <button name="mark_as_available" string="Mark as Available" type="object" invisible="available" class="oe_highlight"/>
+                    <field name="available" invisible="1"/>
+                    <button name="update_description" string="Update Description" type="object" class="oe_highlight"/> 
+                    <button name="increase_deposite" string="Increase Deposit" type="object" class="oe_highlight"/> 
+                    <button name="add_bedrooms" string="Add Bedroom" type="object" class="btn btn-outline-success" invisible="not available"/>
+                     <field name="available" invisible="1"/>
+                    <button name="change_property_type" string="Make Property as Villa" type="object" class="btn btn-outline-danger"/>
+                    <button name="get_agent_name" string="Get Agent Name" type="object" class="btn btn-outline-info"/>
+                </header>
+                <sheet>
+                <field name="property_image" 
+                        widget="image" 
+                        class="float-end" 
+                        options="{'size': [250, 250]}" 
+                        style="width: 250px !important; height: 250px !important; min-width: 250px; min-height: 250px;"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Name" />
+                        </h1>
+                            
+
+                    </div>
+
+                    <group string="Property Details">
+                    <group>
+                            <field name="property_type"/>
+                        </group>
+                        <group>
+                            <field name="available" help="Indicates if the property is available for sale or rent"/>
+                        </group>
+                        <group>
+                            <field name="price" invisible="not available"/>
+                            <field name="available" invisible="1"/>
+                            <field name="deposite" string="Deposit Amount"/>
+                        </group>
+                        
+                        <group>
+                            <field name="agent_id"/>
+                            <field name="discount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="bedrooms" readonly="1"/>
+                            <field name="create_date" />
+                            <field name="create_uid" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Discount for Property" invisible="not available">
+                            <field name="discount"/>
+                        </page>
+                        <field name="available" invisible="1"/>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+  <!-- Tenant Kanban View -->
+    <record id="view_property_kanban" model="ir.ui.view">
+        <field name="name">real_estate.property.kanban</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="price"/>
+                <field name="property_type"/>
+                <templates>
+                    <t t-name="kanban-box">
+                   
+                        <div class="oe_kanban_global_click p-0" style="overflow: hidden; border-radius: 8px;">
+                            <div class="oe_kanban_details">
+                             <div class="w-100" style="height: 140px; background-color: #f0f0f0;">
+                            <img t-att-src="kanban_image('real_estate.property', 'property_image', record.id.raw_value)" 
+                                 alt="Property" 
+                                 class="w-100 h-100" 
+                                 style="object-fit: cover; border-radius: 4px;"/>
+                        </div>
+                           
+
+                           <div class="p-2">
+                           
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                
+                                <div class="mt-1">
+                                <span class="form-label">Price </span>
+                                    <field name="price"/>
+                                </div>
+                                <!-- <div class="mt-1">
+                                    <field name="property_type" widget="selection"/>
+                                </div> -->
+                                 <div class="mt-1 d-flex justify-content-between">
+                                <div>
+                                <span class="form-label">Bedrooms </span>
+                                    <field name="bedrooms"/>
+                                </div>
+                                <div>
+                                    <field name="available"/>
+                                </div>
+                             <t t-if="record.property_type.raw_value == 'villa'">
+                        <span class="badge text-bg-success">Villa</span>
+                    </t>
+                    <t t-if="record.property_type.raw_value == 'apartment'">
+                        <span class="badge text-bg-info">Apartment</span>
+                    </t>
+                    <t t-if="record.property_type.raw_value == 'house'">
+                        <span class="badge text-bg-info">House</span>
+                    </t>
+                            </div>
+                           </div>
+                            </div>
+                           
+                        </div>
+                    </t>
+                   
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+</odoo>

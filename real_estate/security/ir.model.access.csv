@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_real-estate-project_real-estate-project,real-estate-project.real-estate-project,model_real-estate-project_real-estate-project,base.group_user,1,1,1,1
+access_property_manager,property.manager,model_real_estate_property,,1,1,1,1
+access_tenant_manager,tenant.manager,model_real_estate_tenant,,1,1,1,1
+access_maintenance_manager,maintenance.manager,model_maintenance_request,,1,1,1,1

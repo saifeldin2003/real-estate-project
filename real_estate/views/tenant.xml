@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tenant List View (Tree) -->
+    <record id="view_tenant_tree" model="ir.ui.view">
+        <field name="name">real_estate.tenant.tree</field>
+        <field name="model">real_estate.tenant</field>
+        <field name="arch" type="xml">
+        
+            <tree string="Tenants">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="city"/>
+                <!-- <field name="crm_lead_id"/> -->
+                
+            </tree>
+        </field>
+    </record>
+
+    <!-- Tenant Action (Links views together) -->
+    <record id="action_tenant" model="ir.actions.act_window">
+        <field name="name">Tenants</field>
+        <field name="res_model">real_estate.tenant</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first tenant
+            </p>
+        </field>
+    </record>
+
+
+
+     
+ <!-- Tenant Form View -->
+    <record id="view_tenant_form" model="ir.ui.view">
+        <field name="name">real_estate.tenant.form</field>
+        <field name="model">real_estate.tenant</field>
+        <field name="arch" type="xml">
+            <form string="Tenant">
+            <header>
+                     <button name="set_name_notes" string="Set Name and Notes" type="object" class="oe_highlight"/>
+                     <button name="get_lead_name" string="Get Lead Name" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Tenant Name"/>
+                        </h1>
+                    </div>
+
+                   <group string="Tenant Details">
+                    <group>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                        </group>
+                        <group>
+                            <field name="mobile"/>
+                        </group>
+                        
+                        <group>
+                            <field name="city"/>
+                        </group>
+                        <group>
+                            <field name="crm_lead_id"/>
+                        </group>
+                        <group>
+                            <field name="date_of_birth" />
+                        </group>
+                        <group>
+                            <field name="active" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="date_joined" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- Tenant Kanban View -->
+    <record id="view_tenant_kanban" model="ir.ui.view">
+        <field name="name">real_estate.tenant.kanban</field>
+        <field name="model">real_estate.tenant</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="date_joined"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="mt-1">
+                                    <field name="email" widget="email"/>
+                                </div>
+                                <div class="text-muted mt-1">
+                                    Joined: <field name="date_joined"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>
