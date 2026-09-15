@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="view_crm_lead_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+        <header position="inside">
+            <button name="get_name" string="Get Name" type="object" class="oe_highlight"/>
+        </header>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">sales man</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="string">Expected Date</attribute>
+                <attribute name="required">1</attribute>
+            </xpath>
+            
+            <!-- <field name="partner_id" position="after">
+                <field name="property_id"/>
+            </field> -->
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="property_id"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="before">
+                <field name="property_type"/>
+            </xpath>
+            <!-- <field name="user_id" position="attributes">
+                <attribute name="string">sales man</attribute>
+            </field> -->
+     </field>
+     
+       </record>
+    
+
+     
+</odoo>

@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class Property(models.Model):
     _name = 'real_estate.property'
@@ -60,4 +61,15 @@ class Property(models.Model):
                 if record.agent_id.name :
                     record.write({'description':"Name of Sales Person: " + record.agent_id.name + '\n' +"Email: "+ record.agent_id.login})           
                 else:
-                    record.write({'description':'No Agent Assigned'})     
+                    record.write({'description':'No Agent Assigned'})  
+
+
+
+
+
+    def write(self, vals):
+        if 'available' in vals and vals['available'] == False:
+            if 'bedrooms' in vals:
+                raise UserError("Cannot Change Bedrooms it is unavailable.")
+        return super(Property, self).write(vals)
+        

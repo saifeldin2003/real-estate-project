@@ -5,3 +5,4 @@ from . import property
 from . import tenant
 from . import lease
 from . import maintenance_request
+from . import crm_lead

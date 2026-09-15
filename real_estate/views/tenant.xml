@@ -30,7 +30,24 @@
         </field>
     </record>
 
-
+ <record id="view_tenant_search" model="ir.ui.view">
+        <field name="name">real_estate.tenant.search</field>
+        <field name="model">real_estate.tenant</field>
+        <field name="arch" type="xml">
+            <search string="Search Tenants">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Age Category" name="group_by_age_category" context="{'group_by': 'age_category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 
      
  <!-- Tenant Form View -->

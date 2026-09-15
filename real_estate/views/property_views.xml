@@ -5,7 +5,7 @@
         <field name="name">real_estate.property.tree</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties" decoration-info="property_type == 'apartment'" decoration-danger="property_type == 'villa'">
                 <field name="name"/>
                 <field name="price"/>
                 <field name="bedrooms"/>
@@ -31,7 +31,29 @@
         </field>
     </record>
 
-
+    <record id="view_property_search" model="ir.ui.view">
+        <field name="name">real_estate.property.search</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="price"/>
+                <field name="bedrooms"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('available', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('available', '=', False)]"/>
+                <filter string="Villa" name="villa" domain="[('property_type', '=', 'villa')]"/>
+                <filter string="Apartment" name="apartment" domain="[('property_type', '=', 'apartment')]"/>
+                <filter string="House" name="house" domain="[('property_type', '=', 'house')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Type" name="group_by_type" context="{'group_by': 'property_type'}"/>
+                    <filter string="Availability" name="group_by_availability" context="{'group_by': 'available'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+**************************************
 
       <!-- Property Form View -->
     <record id="view_property_form" model="ir.ui.view">
@@ -84,7 +106,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="bedrooms" readonly="1"/>
+                            <field name="bedrooms" />
                             <field name="create_date" />
                             <field name="create_uid" />
                         </group>

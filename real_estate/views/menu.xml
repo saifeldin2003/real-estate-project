@@ -26,4 +26,11 @@
               action="action_maintenance_request"
               sequence="30"/>
 
+    <!-- Leases Menu -->
+    <menuitem id="menu_lease"
+              name="Leases"
+              parent="menu_real_estate_root"
+              action="action_lease"
+              sequence="40"/>          
+
 </odoo>
