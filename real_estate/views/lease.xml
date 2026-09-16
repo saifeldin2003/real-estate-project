@@ -60,6 +60,9 @@
                         <group>
                             <field name="tenant_id"/>
                         </group>
+                        <group>
+                            <field name="user_id"/>
+                        </group>
                         
                     <group>
                             <field name="start_date"/>

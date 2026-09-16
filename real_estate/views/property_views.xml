@@ -62,8 +62,8 @@
         <field name="arch" type="xml">
             <form string="Property">
             <header>
-                    <button name="mark_as_occupied" string="Mark as Occupied" type="object" invisible="not available" class="oe_highlight"/>
-                    <button name="mark_as_available" string="Mark as Available" type="object" invisible="available" class="oe_highlight"/>
+                    <button name="mark_as_occupied" groups="real_estate.group_property_manager" string="Mark as Occupied" type="object" invisible="not available" class="oe_highlight"/>
+                    <button name="mark_as_available"  string="Mark as Available" type="object" invisible="available" class="oe_highlight"/>
                     <field name="available" invisible="1"/>
                     <button name="update_description" string="Update Description" type="object" class="oe_highlight"/> 
                     <button name="increase_deposite" string="Increase Deposit" type="object" class="oe_highlight"/> 

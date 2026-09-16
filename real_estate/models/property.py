@@ -65,11 +65,11 @@ class Property(models.Model):
 
 
 
+    
 
-
-    def write(self, vals):
-        if 'available' in vals and vals['available'] == False:
-            if 'bedrooms' in vals:
-                raise UserError("Cannot Change Bedrooms it is unavailable.")
-        return super(Property, self).write(vals)
+    # def write(self, vals):
+    #     if 'available' in vals and vals['available'] == False:
+    #         if 'bedrooms' in vals:
+    #             raise UserError("Cannot Change Bedrooms it is unavailable.")
+    #     return super(Property, self).write(vals)
         

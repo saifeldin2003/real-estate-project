@@ -21,9 +21,14 @@
             <!-- <field name="partner_id" position="after">
                 <field name="property_id"/>
             </field> -->
+
+
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="property_id"/>
             </xpath>
+
+
+            
             <xpath expr="//field[@name='user_id']" position="before">
                 <field name="property_type"/>
             </xpath>

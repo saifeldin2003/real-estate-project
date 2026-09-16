@@ -15,6 +15,7 @@ class Tenant(models.Model):
     date_of_birth = fields.Date(string='Date of Birth')
     notes = fields.Text(string='Notes')
     active = fields.Boolean(string='Active', default=True)
+    user_id = fields.Many2one('res.users', string='Related User', index=True)
     crm_lead_id = fields.Many2one('crm.lead', string='CRM Lead', ondelete='set null', index=True) 
     age_category = fields.Selection([
         ('a', 'From 1 to 20'),

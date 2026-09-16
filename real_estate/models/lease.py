@@ -19,6 +19,7 @@ class Lease(models.Model):
         ondelete='cascade',
         index=True
     )
+    user_id = fields.Many2one('res.users', string='Related User', index=True)
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     monthly_rent = fields.Float(string='Monthly Rent', required=True)
@@ -33,8 +34,11 @@ class Lease(models.Model):
     
     def convert_to_activate(self):
         """Activate the lease"""
+        if not self.env.user.has_group('real_estate.group_tenant_manager'):
+            raise UserError("You are not allowed to activate this lease it's only for Managers.")
         for record in self:
             record.write({'state': 'active'})
+
     def convert_to_draft(self):
             """Convert the lease to draft"""
             for record in self:
@@ -67,3 +71,11 @@ class Lease(models.Model):
          default = default or {}
          default['name'] = self.env['ir.sequence'].next_by_code('real_estate.lease')
          return super().copy(default)
+    def write(self, vals):
+            if not self.env.user.has_group('real_estate.group_lease_manager'):
+                raise UserError("You are not allowed to modify this lease it's only for Managers.")
+            return super(Lease, self).write(vals)
+    def unlink(self):
+            if not self.env.user.has_group('real_estate.group_lease_manager'):
+                raise UserError("You are not allowed to delete this lease it's only for Managers.")
+            return super(Lease, self).unlink()
