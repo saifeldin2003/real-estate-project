@@ -5,17 +5,13 @@
         <field name="name">real_estate.lease.tree</field>
         <field name="model">real_estate.lease</field>
         <field name="arch" type="xml">
-        
+
             <tree string="Leases">
                 <field name="name"/>
                 <field name="property_id"/>
                 <field name="tenant_id"/>
-                <field name="state" widget="badge" 
-                decoration-success="state == 'active'"
-                decoration-danger="state == 'cancelled'"
-                decoration-warning="state == 'expired'"
-                />
-                
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-danger="state == 'cancelled'" decoration-warning="state == 'expired'" />
+
             </tree>
         </field>
     </record>
@@ -33,60 +29,67 @@
     </record>
 
 
-     
- <!-- Lease Form View -->
+
+    <!-- Lease Form View -->
     <record id="view_lease_form" model="ir.ui.view">
         <field name="name">real_estate.lease.form</field>
         <field name="model">real_estate.lease</field>
         <field name="arch" type="xml">
             <form string="Lease">
-          <header>
-          <button name="convert_to_activate" string="Convert to Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
-          <button name="convert_to_draft" string="Convert to Draft" type="object" class="oe_highlight" invisible="state != 'active'"/>
-          <button name="%(real_estate.action_maintenance_request_wizard)d" string="Maintenance Request" type="action" context="{'default_lease_id': active_id}" invisible="state != 'active'"/>
-          <field name="state" widget="statusbar" statusbar_visible="draft,active,at_risk,expired,cancelled"/>
-          </header>
+                <header>
+                    <button name="convert_to_activate" string="Convert to Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_submit_request_electricity" string="Submit Electricity Request" type="object" class="oe_highlight" />
+                    <button name="convert_to_draft" string="Convert to Draft" type="object" class="oe_highlight" invisible="state != 'active'"/>
+                    <button name="%(real_estate.action_maintenance_request_wizard)d" string="Maintenance Request" type="action" context="{'default_lease_id': active_id}" invisible="state != 'active'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,at_risk,expired,cancelled"/>
+                </header>
                 <sheet>
-                <div class="oe_button_box" name="button_box" >
-                        <button name="action_view_tenant"
-                            type="object"
-                            string="Tenant"
-                            class="oe_stat_button"
-                            icon="fa-user">
-                           
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_tenant" type="object" string="Tenant" class="oe_stat_button" icon="fa-user">
                         </button>
-                        
+
                     </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Lease Name"/>
                         </h1>
                     </div>
-
-                   <group string="Lease Details">
-                    <group>
+                    <group >
+                        <group string="Lease Details">
                             <field name="monthly_rent"/>
-                        </group>
-                        <group>
                             <field name="deposit_paid"/>
-                        </group>
-                        <group>
-                            <field name="property_id"/>
-                        </group>
-                        <group>
+                            <field name="duration"/>
+                            <field name="is_active"/>
+                            <field name="property_id" domain="[('available', '=', True)]"/>
                             <field name="tenant_id"/>
-                        </group>
-                        <group>
                             <field name="user_id"/>
                         </group>
-                        
-                    <group>
+                        <group string="Lease Dates">
                             <field name="start_date"/>
                             <field name="end_date"/>
+                            <field name="next_electric_recharge_date"/>
+                            <field name="duration"/>
+                        </group>
                     </group>
-                   
+
+                    <group string="Types of Maintenance Costs">
+                        <group >
+                            <field name="maintenance_plumbing_costs"/>
+                            <field name="maintenance_electrical_costs"/>
+                            <field name="maintenance_air_condition_costs"/>
+                        </group>
+                        <group >
+                            <field name="maintenance_appliance_costs"/>
+                            <field name="maintenance_other_costs"/>
+                            <field name="maintenance_actual_costs"/>
+                        </group>
+
+                    </group>
+
+
+
                     <notebook>
-                         <page string="Maintanance Requsets">
+                        <page string="Maintanance Requsets">
                             <field name="maintenance_ids">
                                 <tree create="true" delete ="false">
                                     <field name="name"></field>
@@ -94,12 +97,12 @@
                                     <field name="tenant_id"></field>
                                     <field name="property_id"></field>
                                     <field name="issue_type"></field>
+                                    <field name="actual_cost"></field>
                                 </tree>
-                                </field>
+                            </field>
 
                         </page>
                     </notebook>
-                    </group>
                 </sheet>
             </form>
         </field>
@@ -107,7 +110,7 @@
 
 
 
- <record id="view_lease_search" model="ir.ui.view">
+    <record id="view_lease_search" model="ir.ui.view">
         <field name="name">real_estate.lease.search</field>
         <field name="model">real_estate.lease</field>
         <field name="arch" type="xml">
@@ -130,8 +133,8 @@
             </search>
         </field>
     </record>
-    
-     <!-- Lease Kanban View -->
+
+    <!-- Lease Kanban View -->
     <record id="view_lease_kanban" model="ir.ui.view">
         <field name="name">real_estate.lease.kanban</field>
         <field name="model">real_estate.lease</field>
@@ -169,5 +172,5 @@
         </field>
     </record>
 
-     
+
 </odoo>

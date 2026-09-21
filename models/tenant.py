@@ -14,6 +14,7 @@ class Tenant(models.Model):
     city = fields.Char(string='City', tracking = True)
     date_joined = fields.Date(string='Date Joined', default=fields.Date.today, readonly=True)
     date_of_birth = fields.Date(string='Date of Birth')
+    age = fields.Integer(string='Age', compute='_compute_age')
     notes = fields.Text(string='Notes',)
     active = fields.Boolean(string='Active', default=True)
     user_id = fields.Many2one('res.users', string='Related User', index=True)
@@ -53,6 +54,15 @@ class Tenant(models.Model):
     lease_count = fields.Integer(compute="_compute_lease_count")
     maintenance_count = fields.Integer(compute="_compute_maintenance_count")
 
+    @api.depends('date_of_birth')
+    def _compute_age(self):
+        today = fields.Date.today()
+        for record in self:
+            if record.date_of_birth:
+                age = today.year - record.date_of_birth.year - ((today.month, today.day) < (record.date_of_birth.month, record.date_of_birth.day))
+                record.age = age
+            else:
+                record.age = 0
     @api.depends('lease_ids')
     def _compute_lease_count(self):
             for record in self:

@@ -96,6 +96,7 @@
                             <field name="phone"/>
                             <field name="mobile"/>
                             <field name="city"/>
+                            <field name="age"/>
                         </group>
                        
                         <group>
