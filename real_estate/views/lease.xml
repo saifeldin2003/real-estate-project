@@ -10,6 +10,11 @@
                 <field name="name"/>
                 <field name="property_id"/>
                 <field name="tenant_id"/>
+                <field name="state" widget="badge" 
+                decoration-success="state == 'active'"
+                decoration-danger="state == 'cancelled'"
+                decoration-warning="state == 'expired'"
+                />
                 
             </tree>
         </field>
@@ -38,9 +43,20 @@
           <header>
           <button name="convert_to_activate" string="Convert to Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
           <button name="convert_to_draft" string="Convert to Draft" type="object" class="oe_highlight" invisible="state != 'active'"/>
+          <button name="%(real_estate.action_maintenance_request_wizard)d" string="Maintenance Request" type="action" context="{'default_lease_id': active_id}" invisible="state != 'active'"/>
           <field name="state" widget="statusbar" statusbar_visible="draft,active,at_risk,expired,cancelled"/>
           </header>
                 <sheet>
+                <div class="oe_button_box" name="button_box" >
+                        <button name="action_view_tenant"
+                            type="object"
+                            string="Tenant"
+                            class="oe_stat_button"
+                            icon="fa-user">
+                           
+                        </button>
+                        
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Lease Name"/>
@@ -69,11 +85,20 @@
                             <field name="end_date"/>
                     </group>
                    
-                    <!-- <notebook>
-                        <page string="Notes">
-                            <field name="notes"/>
+                    <notebook>
+                         <page string="Maintanance Requsets">
+                            <field name="maintenance_ids">
+                                <tree create="true" delete ="false">
+                                    <field name="name"></field>
+                                    <field name="lease_id"></field>
+                                    <field name="tenant_id"></field>
+                                    <field name="property_id"></field>
+                                    <field name="issue_type"></field>
+                                </tree>
+                                </field>
+
                         </page>
-                    </notebook> -->
+                    </notebook>
                     </group>
                 </sheet>
             </form>

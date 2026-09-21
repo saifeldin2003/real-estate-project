@@ -5,6 +5,7 @@ class Lease(models.Model):
     _description = 'Property Lease Agreement'
     
     name = fields.Char(string='Lease Reference', required=True, default='New')
+    maintenance_ids = fields.One2many('maintenance.request','lease_id')
     property_id = fields.Many2one(
         'real_estate.property',
         string='Property',
@@ -31,7 +32,17 @@ class Lease(models.Model):
     ('expired', 'Expired'),
     ('cancelled', 'Cancelled'),
         ], string='Status', default='draft', required=True)
-    
+    def action_view_tenant(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tenant',
+            'res_model': 'real_estate.tenant',
+            'view_mode': 'form',
+            'res_id': self.tenant_id.id,
+            'target': 'current',
+        }
     def convert_to_activate(self):
         """Activate the lease"""
         if not self.env.user.has_group('real_estate.group_tenant_manager'):

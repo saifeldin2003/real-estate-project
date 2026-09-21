@@ -9,7 +9,8 @@ class MaintenanceRequest(models.Model):
     lease_id = fields.Many2one('real_estate.lease')
     tenant_id = fields.Many2one(related='lease_id.tenant_id', store=True)
     property_id = fields.Many2one(related='lease_id.property_id', store=True)
-    
+    preferred_date = fields.Date(string='Preferred Date')
+    tenant_phone = fields.Char(string='Tenant Phone')
     issue_type = fields.Selection([
         ('plumbing', 'Plumbing'),
         ('electrical', 'Electrical'),
@@ -18,6 +19,7 @@ class MaintenanceRequest(models.Model):
         ('other', 'Other')
     ], required=True)
     description = fields.Text(required=True, tracking=True)
+    state = fields.Text(required=True, tracking=True)
     urgency = fields.Selection([
         ('low', 'Low'),
         ('medium', 'Medium'),

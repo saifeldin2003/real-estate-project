@@ -18,13 +18,13 @@ class CrmLead(models.Model):
             for record in self:
                record.write({'description':record.name })
 
-    def write(self, vals):
-        print("vals:", vals.get('name'))
-        if vals.get('expected_revenue') > 5000:
-            vals['description'] = "This is a high-value lead with expected revenue greater than 5000."
-        else:
-             raise ValueError("Expected revenue must be greater than 5000.")    
-        return super(CrmLead, self).write(vals)              
+    # def write(self, vals):
+    #     print("vals:", vals.get('name'))
+    #     if vals.get('expected_revenue') > 5000:
+    #         vals['description'] = "This is a high-value lead with expected revenue greater than 5000."
+    #     else:
+    #          raise ValueError("Expected revenue must be greater than 5000.")    
+    #     return super(CrmLead, self).write(vals)              
     
 
  

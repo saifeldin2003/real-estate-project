@@ -2,25 +2,102 @@ from odoo import models, fields, api
 
 class Tenant(models.Model):
     _name = 'real_estate.tenant'
+    _inherit = ['mail.thread','mail.activity.mixin']
     _description = 'Real Estate Tenant'
     _order = 'name asc'
     
     # === CORE FIELDS ===
-    name = fields.Char(string='Tenant Name', required=True, index=True)
-    email = fields.Char(string='Email', required=True, index=True)
-    phone = fields.Char(string='Phone Number')
-    mobile = fields.Char(string='Mobile Number')
-    city = fields.Char(string='City')
+    name = fields.Char(string='Tenant Name', required=True, index=True, tracking = True)
+    email = fields.Char(string='Email', required=True, index=True, tracking = True)
+    phone = fields.Char(string='Phone Number', tracking = True)
+    mobile = fields.Char(string='Mobile Number', tracking = True)
+    city = fields.Char(string='City', tracking = True)
     date_joined = fields.Date(string='Date Joined', default=fields.Date.today, readonly=True)
     date_of_birth = fields.Date(string='Date of Birth')
-    notes = fields.Text(string='Notes')
+    notes = fields.Text(string='Notes',)
     active = fields.Boolean(string='Active', default=True)
     user_id = fields.Many2one('res.users', string='Related User', index=True)
+    lease_ids = fields.One2many(
+            'real_estate.lease',
+            'tenant_id',
+            string='Leases',
+            required=True,
+            ondelete='cascade',  # If property deleted, delete lease too
+            index=True
+        )
+    maintenance_ids = fields.One2many(
+                'maintenance.request',
+                'tenant_id',
+                string='Leases',
+                required=True,
+                ondelete='cascade',  # If property deleted, delete lease too
+                index=True
+            )
     crm_lead_id = fields.Many2one('crm.lead', string='CRM Lead', ondelete='set null', index=True) 
     age_category = fields.Selection([
         ('a', 'From 1 to 20'),
         ('b', 'From 21 to 40'),
         ('c', 'From 41 to 60'),], string='Age Group',)
+
+    tenant_status = fields.Selection(
+    [
+        ('active', 'Active'),
+        ('expired', 'Expired'),
+        ('cancelled', 'Cancelled'),
+        ('no_lease', 'No Lease'),
+    ],
+    string='Tenant Status',
+    compute='_compute_tenant_status',
+    store=True
+    )
+    lease_count = fields.Integer(compute="_compute_lease_count")
+    maintenance_count = fields.Integer(compute="_compute_maintenance_count")
+
+    @api.depends('lease_ids')
+    def _compute_lease_count(self):
+            for record in self:
+                record.lease_count = len(record.lease_ids)
+    @api.depends('maintenance_ids')
+    def _compute_maintenance_count(self):
+            for record in self:
+                record.maintenance_count = len(record.maintenance_ids)
+                print(record.maintenance_count)            
+
+    def action_view_leases (self):
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Leases',
+                'res_model': 'real_estate.lease',
+                'view_mode': 'tree',
+                'domain': [
+                    ('tenant_id', '=', self.id)
+                ],
+            }
+    def action_view_maintenance (self):
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Maintenance Requests',
+                'res_model': 'maintenance.request',
+                'view_mode': 'tree',
+                'domain': [
+                    ('tenant_id', '=', self.id)
+                ],
+            }
+
+    @api.depends('lease_ids.state')
+    def _compute_tenant_status(self):
+      for tenant in self:
+            active_lease = tenant.lease_ids.filtered(
+                lambda lease: lease.state == 'active'
+            )
+            if active_lease:
+                tenant.tenant_status = 'active'
+            elif tenant.lease_ids:
+                # لو مفيش active، ناخد حالة آخر Lease
+                tenant.tenant_status = tenant.lease_ids[-1].state
+            else:
+                tenant.tenant_status = 'no_lease'
+
     def set_name_notes(self):
         """Set the name and notes of the tenant"""
         for record in self:

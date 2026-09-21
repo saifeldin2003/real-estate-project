@@ -6,12 +6,17 @@
         <field name="model">real_estate.tenant</field>
         <field name="arch" type="xml">
         
-            <tree string="Tenants">
+            <tree string="Tenants" default_order="create_date asc">
                 <field name="name"/>
                 <field name="email"/>
                 <field name="phone"/>
                 <field name="mobile"/>
                 <field name="city"/>
+                <field name="tenant_status" widget="badge" 
+                decoration-success="tenant_status == 'active'"
+                decoration-danger="tenant_status == 'cancelled'"
+                decoration-warning="tenant_status == 'expired'"
+                />
                 <!-- <field name="crm_lead_id"/> -->
                 
             </tree>
@@ -61,6 +66,24 @@
                      <button name="get_lead_name" groups="real_estate.group_tenant" string="Get Lead Name" type="object" class="oe_highlight"/>
                 </header>
                 <sheet>
+                <div class="oe_button_box" name="button_box" invisible ="lease_count == 0">
+                        <button name="action_view_leases"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o">
+                            <field name="lease_count"
+                                    widget="statinfo"
+                                    string="Leases"/>
+                        </button>
+                        <button name="action_view_maintenance"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-wrench">
+                            <field name="maintenance_count"
+                                    widget="statinfo"
+                                    string="Maintenance Requests"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Tenant Name"/>
@@ -70,29 +93,18 @@
                    <group string="Tenant Details">
                     <group>
                             <field name="email"/>
-                        </group>
-                        <group>
                             <field name="phone"/>
-                        </group>
-                        <group>
                             <field name="mobile"/>
-                        </group>
-                        
-                        <group>
                             <field name="city"/>
                         </group>
+                       
                         <group>
-                            <field name="crm_lead_id"/>
-                        </group>
-                        <group>
+                            <field name="crm_lead_id" readonly="true"/>
                             <field name="date_of_birth" />
-                        </group>
-                        <group>
                             <field name="active" />
+                             <field name="user_id"/>
                         </group>
-                        <group>
-                            <field name="user_id"/>
-                        </group>
+                        
                     </group>
                     <group>
                         <group>
@@ -100,11 +112,28 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Notes">
-                            <field name="notes"/>
+                        <page string="Internal Notes" name="internal_notes">
+                                <field name="notes" placeholder="Add a description..." widget="html" options="{'collaborative': true}"/>
+                            </page>
+                             <page string="Leases">
+                            <field name="lease_ids">
+                                <tree create="false" delete ="false">
+                                    <field name="name"/>
+                                    <field name="tenant_id"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+
+                                </tree>
+                                </field>
+
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="message_ids"/>
+                <field name="activity_ids"/>
+                </div>
             </form>
         </field>
     </record>
