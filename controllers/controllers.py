@@ -45,8 +45,6 @@ class RealEstatePortal(CustomerPortal):
     @http.route(['/my/maintenance-requests', '/my/maintenance-requests/page/<int:page>'], type='http', auth='user', website=True)
     def portal_my_maintenance_requests(self, page=1, **kw):
             values = super(RealEstatePortal, self)._prepare_portal_layout_values()
-           
-    
             maintenance_requests = request.env['maintenance.request'].sudo().search([
                 ('assigned_to', '=', request.env.user.id)
             ], order='scheduled_date desc')
