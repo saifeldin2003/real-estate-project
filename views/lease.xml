@@ -11,6 +11,8 @@
                 <field name="property_id"/>
                 <field name="tenant_id"/>
                 <field name="state" widget="badge" decoration-success="state == 'active'" decoration-danger="state == 'cancelled'" decoration-warning="state == 'expired'" />
+                <field name="start_date"/>
+                <field name="end_date"/>
 
             </tree>
         </field>
@@ -26,6 +28,18 @@
                 Create your first lease
             </p>
         </field>
+    </record>
+
+     <record id="ir_cron_auto_expire_leases" model="ir.cron">
+        <field name="name">Real Estate: Auto Expire Leases</field>
+        <field name="model_id" ref="model_real_estate_lease"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_expire_leases()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
     </record>
 
 
@@ -88,6 +102,9 @@
 
 
 
+
+
+
                     <notebook>
                         <page string="Maintanance Requsets">
                             <field name="maintenance_ids">
@@ -101,6 +118,21 @@
                                 </tree>
                             </field>
 
+                        </page>
+                        <page string="Payments Details">
+                            
+                                <group >
+                                    <group >
+                                        <field name="cash_details"/>
+                                        <field name="check_details"/>
+                                        <field name="bank_transfer_details"/>
+                                    </group>
+                                    <group >
+                                        <field name="credit_card_details"/>
+                                        <field name="other_details"/>
+                                    </group>
+                                </group>
+                            
                         </page>
                     </notebook>
                 </sheet>

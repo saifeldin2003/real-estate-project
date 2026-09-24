@@ -140,6 +140,18 @@
             </form>
         </field>
     </record>
+    <record id="ir_cron_auto_see_property" model="ir.cron">
+        <field name="name">Real Estate: Auto Show New Property</field>
+        <field name="model_id" ref="model_real_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_show_property()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+    </record>
     <!-- Tenant Kanban View -->
     <record id="view_property_kanban" model="ir.ui.view">
         <field name="name">real_estate.property.kanban</field>

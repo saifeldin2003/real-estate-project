@@ -9,3 +9,4 @@ access_lease_user,lease.manager,model_real_estate_lease,group_lease,1,1,1,1
 access_maintaince_user_wizard,maintenance.request.wizard,model_maintenance_request_wizard,,1,1,1,1
 access_real_estate_tenant_wizard,real.estate.tenant.wizard,model_real_estate_tenant_wizard,,1,1,1,1
 access_real_estate_lease_wizard,real.estate.lease.wizard,model_real_estate_lease_wizard,,1,1,1,1
+access_lease_payment,access.lease.payment,model_lease_payment,,1,1,1,1

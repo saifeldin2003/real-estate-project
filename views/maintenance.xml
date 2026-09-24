@@ -17,6 +17,20 @@
     </record>
 
 
+    <record id="ir_cron_auto_urgency" model="ir.cron">
+        <field name="name">Real Estate: Auto Urgency</field>
+        <field name="model_id" ref="model_maintenance_request"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_urgency()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+        <!-- <field name="nextcall">2026-09-22 13:10:00</field> -->
+    </record>
+
+
 <!--        
   Tenant Form View 
     <record id="view_maintenace_form" model="ir.ui.view">

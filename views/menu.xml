@@ -31,6 +31,12 @@
               name="Leases"
               parent="menu_real_estate_root"
               action="action_lease"
-              sequence="40"/>          
+              sequence="40"/>
+    <!-- Payments Menu -->
+    <menuitem id="menu_payment"
+              name="Payments"
+              parent="menu_real_estate_root"
+              action="action_payment"
+              sequence="50"/>          
 
 </odoo>

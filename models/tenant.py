@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError, ValidationError
 class Tenant(models.Model):
     _name = 'real_estate.tenant'
     _inherit = ['mail.thread','mail.activity.mixin']
@@ -54,6 +54,16 @@ class Tenant(models.Model):
     lease_count = fields.Integer(compute="_compute_lease_count")
     maintenance_count = fields.Integer(compute="_compute_maintenance_count")
 
+    _sql_constraints = [
+        ('email_unique', 'UNIQUE(email)', 'Email must be unique! This email is already registered.'),
+    ]
+    
+    @api.constrains('date_of_birth',)
+    def _check_date_of_birth(self):
+        """Ensure date of birth is not in the future"""
+        if self.date_of_birth > fields.Date.today():
+            raise ValidationError("Date of birth cannot be in the future")
+
     @api.depends('date_of_birth')
     def _compute_age(self):
         today = fields.Date.today()
@@ -63,6 +73,7 @@ class Tenant(models.Model):
                 record.age = age
             else:
                 record.age = 0
+
     @api.depends('lease_ids')
     def _compute_lease_count(self):
             for record in self:

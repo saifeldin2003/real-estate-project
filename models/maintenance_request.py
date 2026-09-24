@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from odoo import models, fields, api
 
 class MaintenanceRequest(models.Model):
@@ -30,3 +32,12 @@ class MaintenanceRequest(models.Model):
     scheduled_date = fields.Date()
     completion_date = fields.Date()
     actual_cost = fields.Float()
+
+
+    def _cron_auto_urgency(self):
+        requests = self.search([
+            ('urgency', '=', 'emergency'),
+        ])
+        if not requests.scheduled_date:
+            tomorrow = fields.Date.today() + timedelta(days=1)
+            requests.write({'scheduled_date': tomorrow})

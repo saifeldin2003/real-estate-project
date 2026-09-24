@@ -18,6 +18,27 @@ class CrmLead(models.Model):
             for record in self:
                record.write({'description':record.name })
 
+
+
+    def _cron_auto_create_tenant(self):
+
+        records = self.search([
+            ('property_type', '!=', False),
+        ])
+
+        for record in records:
+            self.env['real_estate.tenant'].sudo().create({
+                'name': record.name + " Tenant Test Cron",
+                'email': record.email_from,
+                'phone': record.phone,
+                'mobile': record.phone,
+                'crm_lead_id': record.id,
+            })
+                   
+
+
+               
+
     # def write(self, vals):
     #     print("vals:", vals.get('name'))
     #     if vals.get('expected_revenue') > 5000:
